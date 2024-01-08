@@ -80,7 +80,7 @@ def placerPionPlateau(plateau : list, pion : dict, num_col : int) -> int:
         plateau[ligne][num_col] = pion
     return ligne
 
-def toStringPlateau(plateau) -> str:
+def toStringPlateau(plateau : list) -> str:
     """
     Fonction permettant de transformer le plateau en chaine de carractère
 
@@ -104,6 +104,43 @@ def toStringPlateau(plateau) -> str:
     res += "-"*15
     res += "\n 0 1 2 3 4 5 6"
     return res
+
+
+def detecter4horizontalPlateau(plateau : list, couleur : int) -> list:
+    """
+    Fonction permettant de vérifier si 4 pion de la couleur choisi sont alignés sur le plateau
+
+    :param plateau:
+    :param couleur:
+    :return:
+    """
+    if type_plateau(plateau) == False:
+        raise TypeError("detecter4horizontalPlateau : Le premier paramètre ne correspond pas à un plateau")
+    elif type(couleur) != int:
+        raise TypeError("detecter4horizontalPlateau : Le second paramètre n'est pas un entier")
+    elif couleur != 0 and couleur != 1:
+        raise ValueError(f"détecter4horizontalPlateau : La valeur de la couleur {couleur} n'est pas correcte")
+
+    res = []
+    for i in range(const.NB_LINES):
+        j = 0
+        while j <= 3 :
+            compt = 0
+            lst = []
+            while compt <=3 and type_pion(plateau[i][j+compt]) and plateau[i][j+compt][const.COULEUR] == couleur:
+                lst.append(plateau[i][j+compt])
+                compt += 1
+            if compt == 4 :
+                res.extend(lst)
+            else :
+                j += 1
+    return res
+
+
+
+
+
+
 
 
 
