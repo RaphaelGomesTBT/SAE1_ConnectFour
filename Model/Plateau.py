@@ -73,13 +73,38 @@ def placerPionPlateau(plateau : list, pion : dict, num_col : int) -> int:
     elif num_col < 0 or num_col >= const.NB_COLUMNS:
         raise ValueError(f"placerPionPlateau : La valeur de la colonne {num_col} n'est pas correcte")
 
-
     ligne = const.NB_LINES - 1
     while ligne >= 0 and plateau[ligne][num_col] != None:
         ligne -= 1
     if ligne >= 0:
         plateau[ligne][num_col] = pion
     return ligne
+
+def toStringPlateau(plateau) -> str:
+    """
+    Fonction permettant de transformer le plateau en chaine de carractère
+
+    :param plateau: tableau 2D représentant le plateau de jeu
+    :return: Chaine de caractère représentant le plateau et les pions placés dedans
+    """
+    res = ""
+    for i in range(const.NB_LINES):
+        for j in range(const.NB_COLUMNS):
+            res += "|"
+            case = plateau[i][j]
+            if type_pion(case):
+                if case[const.COULEUR] == 0:
+                    res += "\x1B[43m \x1B[0m"
+                else :
+                    res += "\x1B[41m \x1B[0m"
+            else :
+                res += " "
+        res += "|\n"
+
+    res += "-"*15
+    res += "\n 0 1 2 3 4 5 6"
+    return res
+
 
 
 
