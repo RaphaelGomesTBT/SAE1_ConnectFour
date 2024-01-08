@@ -35,3 +35,19 @@ def type_plateau(plateau: list) -> bool:
     return True
 
 
+def construirePlateau()-> list:
+    """
+    Fonction permettant de construire la Plateau de jeu
+
+    La fonction n'admet aucun paramètre
+    :return: tableau 2D de 6 lignes et 7 colonnes ou toutes les cases ont pour valeur None
+    """
+    plateau = []
+    for i in range(const.NB_LINES):
+        ligne = []
+        for j in range(const.NB_COLUMNS):
+            ligne.append(None)
+        plateau.append(ligne)
+    return plateau
+
+
