@@ -312,3 +312,4 @@ def getPionsGagnantsPlateau(plateau : list) -> list:
 
 
 
+
