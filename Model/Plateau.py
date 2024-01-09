@@ -110,9 +110,12 @@ def detecter4horizontalPlateau(plateau : list, couleur : int) -> list:
     """
     Fonction permettant de vérifier si 4 pion de la couleur choisi sont alignés sur le plateau
 
-    :param plateau:
-    :param couleur:
-    :return:
+    :param plateau: tableau 2D représentant le plateau de jeu
+    :param couleur: Entier représentant la couleur des pions sélectionnés (0 = jaune / 1 = rouge)
+    :return: Liste des pions (de la couleur choisie) alignés horizontalement par 4 sur le plateau
+    :raise TypeError: Si le premier paramètre ne correspond pas à un plateau
+    :raise TypeError: Si le second paramètre n'est pas un entier
+    :raise ValueError: Si la valeur de la couleur n'est pas 0 ou 1
     """
     if type_plateau(plateau) == False:
         raise TypeError("detecter4horizontalPlateau : Le premier paramètre ne correspond pas à un plateau")
@@ -132,6 +135,7 @@ def detecter4horizontalPlateau(plateau : list, couleur : int) -> list:
                 compt += 1
             if compt == 4 :
                 res.extend(lst)
+                j += 4
             else :
                 j += 1
     return res
