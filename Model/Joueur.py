@@ -146,3 +146,41 @@ def setPlacerPionJoueur(joueur : dict, fonction : callable ) -> None:
     return None
 
 
+from random import randint
+
+def _placerPionJoueur(joueur : dict) -> int:
+    """
+    Fonction chosissant aléatoirement une colonne du plateau
+
+    :param joueur: Dictionnaire représentant le joueur
+    :return: Entier correspondant au numéro de la colonne choisie
+    """
+
+    nb = randint(0,const.NB_COLUMNS - 1)
+    plateau = getPlateauJoueur(joueur)
+    while plateau[0][nb] != None:
+        nb = randint(0, const.NB_COLUMNS - 1)
+    return nb
+
+
+def initialiserIAJoueur(joueur : dict, place : bool) -> None:
+    """
+    Fonction permettant d'affecter la fonction _placerPionJoueur au joueur
+
+    :param joueur: Dictionnaire représentant le joueur
+    :param place: Booléen avec la valeur True si le joueur joue en premier ou False s'il joue en second
+    :return: La fonction ne retourne rien
+    :raise TypeError: Si le premier paramètre n’est pas un joueur
+    :raise TypeError: Si le second paramètre n’est pas un booléen
+    """
+
+    if type_joueur(joueur) == False:
+        raise TypeError("initialiserIAJoueur : Le premier paramètre n’est pas un joueur")
+    elif type(place) != bool:
+        raise TypeError("initialiserIAJoueur : Le second paramètre n’est pas un booléen")
+
+    setPlacerPionJoueur(joueur, _placerPionJoueur)
+    return None
+
+
+
