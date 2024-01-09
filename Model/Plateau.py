@@ -233,6 +233,57 @@ def detecter4diagonaleDirectePlateau(plateau : list, couleur : int) -> list:
     return res
 
 
+def detecter4diagonaleIndirectePlateau(plateau : list, couleur : int) -> list:
+    """
+    Fonction permettant de vérifier si 4 pion de la couleur choisie sont alignés sur une diagonale indirecte sur le plateau
+
+    :param plateau: tableau 2D représentant le plateau de jeu
+    :param couleur: Entier représentant la couleur des pions sélectionnés (0 = jaune / 1 = rouge)
+    :return: Liste des pions (de la couleur choisie) alignés sur une diagonale indirecte par 4 sur le plateau
+    :raise TypeError: Si le premier paramètre ne correspond pas à un plateau
+    :raise TypeError: Si le second paramètre n'est pas un entier
+    :raise ValueError: Si la valeur de la couleur n'est pas 0 ou 1
+    """
+
+    if type_plateau(plateau) == False:
+        raise TypeError("detecter4diagonaleIndirectePlateau : Le premier paramètre ne correspond pas à un plateau")
+    elif type(couleur) != int:
+        raise TypeError("detecter4diagonaleIndirectePlateau : Le second paramètre n'est pas un entier")
+    elif couleur != 0 and couleur != 1:
+        raise ValueError(f"détecter4diagonaleIndirectePlateau : La valeur de la couleur {couleur} n'est pas correcte")
+
+    res = []
+    departi = 2
+    departj = const.NB_COLUMNS - 1
+    while departj >= 3:
+        i = departi
+        j = departj
+
+        while j >= 3 and i <= 2:
+            lst = []
+            compt = 0
+            while compt <= 3 and type_pion(plateau[i + compt][j - compt]) and plateau[i + compt][j - compt][const.COULEUR] == couleur:
+                lst.append(plateau[i + compt][j - compt])
+                compt += 1
+            if compt == 4:
+                res.extend(lst)
+                i += 4
+                j -= 4
+            elif compt >= 2:
+                i += compt
+                j -= compt
+            else:
+                i += 1
+                j -= 1
+
+        if departi > 0:
+            departi -= 1
+        else:
+            departj -= 1
+
+    return res
+
+
 
 
 
