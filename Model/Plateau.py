@@ -284,6 +284,26 @@ def detecter4diagonaleIndirectePlateau(plateau : list, couleur : int) -> list:
     return res
 
 
+def getPionsGagnantsPlateau(plateau : list) -> list:
+    """
+    Fonction permettant de recupérer la liste de tous les pions de même couleur alignés par 4 sur le plateau.
+
+    :param plateau: Tableau 2D représentant le plateau de jeu
+    :return: Liste composée de toutes les séries de 4 pions de même couleur alignés sur le plateau
+    """
+
+    if type_plateau(plateau) == False:
+        raise TypeError("getPionsGagnantsPlateau : Le paramètre n'est pas une plateau")
+
+    res = []
+    for couleur in range(2):
+        res.extend(detecter4horizontalPlateau(plateau, couleur))
+        res.extend(detecter4verticalPlateau(plateau, couleur))
+        res.extend(detecter4diagonaleDirectePlateau(plateau, couleur))
+        res.extend(detecter4diagonaleIndirectePlateau(plateau, couleur))
+    return res
+
+
 
 
 

@@ -29,8 +29,11 @@ print(toStringPlateau(p))
 ## print(detecter4verticalPlateau(p,1))
 ## print(detecter4diagonaleDirectePlateau(p,0))
 ## print(detecter4diagonaleDirectePlateau(p,1))
-print(detecter4diagonaleIndirectePlateau(p,0))
-print(detecter4diagonaleIndirectePlateau(p,1))
+## print(detecter4diagonaleIndirectePlateau(p,0))
+## print(detecter4diagonaleIndirectePlateau(p,1))
+lst = getPionsGagnantsPlateau(p)
+print(lst)
+print(len(lst))
 
 
 
