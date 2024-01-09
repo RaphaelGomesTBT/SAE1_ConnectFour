@@ -108,7 +108,7 @@ def toStringPlateau(plateau : list) -> str:
 
 def detecter4horizontalPlateau(plateau : list, couleur : int) -> list:
     """
-    Fonction permettant de vérifier si 4 pion de la couleur choisi sont alignés sur le plateau
+    Fonction permettant de vérifier si 4 pion de la couleur choisi sont alignés horizontalement sur le plateau
 
     :param plateau: tableau 2D représentant le plateau de jeu
     :param couleur: Entier représentant la couleur des pions sélectionnés (0 = jaune / 1 = rouge)
@@ -136,9 +136,51 @@ def detecter4horizontalPlateau(plateau : list, couleur : int) -> list:
             if compt == 4 :
                 res.extend(lst)
                 j += 4
+            elif compt >= 2:
+                j += compt
             else :
                 j += 1
     return res
+
+
+def detecter4verticalPlateau(plateau : list, couleur : int) -> list:
+    """
+    Fonction permettant de vérifier si 4 pion de la couleur choisi sont alignés verticalement sur le plateau
+
+    :param plateau: tableau 2D représentant le plateau de jeu
+    :param couleur: Entier représentant la couleur des pions sélectionnés (0 = jaune / 1 = rouge)
+    :return: Liste des pions (de la couleur choisie) alignés verticalement par 4 sur le plateau
+    :raise TypeError: Si le premier paramètre ne correspond pas à un plateau
+    :raise TypeError: Si le second paramètre n'est pas un entier
+    :raise ValueError: Si la valeur de la couleur n'est pas 0 ou 1
+    """
+
+    if type_plateau(plateau) == False:
+        raise TypeError("detecter4verticalPlateau : Le premier paramètre ne correspond pas à un plateau")
+    elif type(couleur) != int:
+        raise TypeError("detecter4verticalPlateau : Le second paramètre n'est pas un entier")
+    elif couleur != 0 and couleur != 1:
+        raise ValueError(f"détecter4verticalPlateau : La valeur de la couleur {couleur} n'est pas correcte")
+
+    res = []
+    for j in range(const.NB_COLUMNS):
+        i = 0
+        while i <= 2:
+            compt = 0
+            lst = []
+            while compt <= 3 and type_pion(plateau[i+compt][j]) and plateau[i+compt][j][const.COULEUR] == couleur:
+                lst.append(plateau[i+compt][j])
+                compt += 1
+            if compt == 4:
+                res.extend(lst)
+                i += 4
+            elif compt >= 2:
+                i += compt
+            else:
+                i += 1
+    return res
+
+
 
 
 

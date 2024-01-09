@@ -25,3 +25,7 @@ for _ in range(30):
 print(toStringPlateau(p))
 print(detecter4horizontalPlateau(p,0))
 print(detecter4horizontalPlateau(p,1))
+print(detecter4verticalPlateau(p,0))
+print(detecter4verticalPlateau(p,1))
+
+
