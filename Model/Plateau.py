@@ -290,6 +290,7 @@ def getPionsGagnantsPlateau(plateau : list) -> list:
 
     :param plateau: Tableau 2D représentant le plateau de jeu
     :return: Liste composée de toutes les séries de 4 pions de même couleur alignés sur le plateau
+    :raise TypeError: Si le paramètre n'est pas un plateau
     """
 
     if type_plateau(plateau) == False:
@@ -302,6 +303,27 @@ def getPionsGagnantsPlateau(plateau : list) -> list:
         res.extend(detecter4diagonaleDirectePlateau(plateau, couleur))
         res.extend(detecter4diagonaleIndirectePlateau(plateau, couleur))
     return res
+
+
+def isRempliPlateau(plateau : list)-> bool:
+    """
+    Fonction permettant de déterminer si le plateau de jeu est rempli.
+
+    :param plateau: Tableau 2D représentant le plateau de jeu
+    :return: Booléen avec la valeur True si le plateau est rempli ou False dans le cas contraire
+    :raise TypeError: Si le paramètre n'est pas un plateau
+    """
+
+    if type_plateau(plateau) == False:
+        raise TypeError("isRempliPlateau : Le paramètre n'est pas un plateau")
+
+    statut = True
+    j = 0
+    while j < const.NB_COLUMNS and statut == True:
+        if plateau[0][j] == None:
+            statut = False
+        j += 1
+    return statut
 
 
 
