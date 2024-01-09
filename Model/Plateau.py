@@ -93,7 +93,7 @@ def toStringPlateau(plateau : list) -> str:
             res += "|"
             case = plateau[i][j]
             if type_pion(case):
-                if case[const.COULEUR] == 0:
+                if getCouleurPion(case) == 0:
                     res += "\x1B[43m \x1B[0m"
                 else :
                     res += "\x1B[41m \x1B[0m"
@@ -130,7 +130,7 @@ def detecter4horizontalPlateau(plateau : list, couleur : int) -> list:
         while j <= 3 :
             compt = 0
             lst = []
-            while compt <=3 and type_pion(plateau[i][j+compt]) and plateau[i][j+compt][const.COULEUR] == couleur:
+            while compt <=3 and type_pion(plateau[i][j+compt]) and getCouleurPion(plateau[i][j+compt]) == couleur:
                 lst.append(plateau[i][j+compt])
                 compt += 1
             if compt == 4 :
@@ -168,7 +168,7 @@ def detecter4verticalPlateau(plateau : list, couleur : int) -> list:
         while i <= 2:
             compt = 0
             lst = []
-            while compt <= 3 and type_pion(plateau[i+compt][j]) and plateau[i+compt][j][const.COULEUR] == couleur:
+            while compt <= 3 and type_pion(plateau[i+compt][j]) and getCouleurPion(plateau[i+compt][j]) == couleur:
                 lst.append(plateau[i+compt][j])
                 compt += 1
             if compt == 4:
@@ -211,7 +211,7 @@ def detecter4diagonaleDirectePlateau(plateau : list, couleur : int) -> list:
         while j <= 3 and i <= 2:
             lst = []
             compt = 0
-            while compt <= 3 and type_pion(plateau[i+compt][j+compt]) and plateau[i+compt][j+compt][const.COULEUR] == couleur:
+            while compt <= 3 and type_pion(plateau[i+compt][j+compt]) and getCouleurPion(plateau[i+compt][j+compt]) == couleur:
                 lst.append(plateau[i+compt][j+compt])
                 compt += 1
             if compt == 4:
@@ -262,7 +262,7 @@ def detecter4diagonaleIndirectePlateau(plateau : list, couleur : int) -> list:
         while j >= 3 and i <= 2:
             lst = []
             compt = 0
-            while compt <= 3 and type_pion(plateau[i + compt][j - compt]) and plateau[i + compt][j - compt][const.COULEUR] == couleur:
+            while compt <= 3 and type_pion(plateau[i + compt][j - compt]) and getCouleurPion(plateau[i + compt][j - compt]) == couleur:
                 lst.append(plateau[i + compt][j - compt])
                 compt += 1
             if compt == 4:
