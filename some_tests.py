@@ -19,7 +19,7 @@ print("\x1B[41mA\x1B[0m : A sur fond rouge")
 from random import randint, choice
 
 p = construirePlateau()
-for _ in range(40):
+for _ in range(20):
  placerPionPlateau(p, construirePion(choice(const.COULEURS)),
  randint(0, const.NB_COLUMNS - 1))
 print(toStringPlateau(p))
@@ -31,11 +31,16 @@ print(toStringPlateau(p))
 ## print(detecter4diagonaleDirectePlateau(p,1))
 ## print(detecter4diagonaleIndirectePlateau(p,0))
 ## print(detecter4diagonaleIndirectePlateau(p,1))
-lst = getPionsGagnantsPlateau(p)
-print(lst)
-print(len(lst))
+## lst = getPionsGagnantsPlateau(p)
+## print(lst)
+## print(len(lst))
 
-print(isRempliPlateau(p))
+## print(isRempliPlateau(p))
+ligne = randint(0, const.NB_LINES - 1)
+print(ligne)
+print(placerPionLignePlateau(p, construirePion(choice(const.COULEURS)), ligne, True))
+
+print(toStringPlateau(p))
 
 
 

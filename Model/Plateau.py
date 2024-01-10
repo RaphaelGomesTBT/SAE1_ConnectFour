@@ -326,6 +326,115 @@ def isRempliPlateau(plateau : list)-> bool:
     return statut
 
 
+def placerPionLignePlateau(plateau : list, pion : dict, ligne : int, left : bool) -> tuple:
+    """
+    Fonction permettant de placer un pion sur une ligne du plateau.
+
+    :param plateau: Tableau 2D représentant le plateau de jeu
+    :param pion: Dictionnaire représentant le joueur
+    :param ligne: Entier correspondant au numéro de la ligne jouée
+    :param left: Booléen avec pour valeur True si le joueur joue à gauche ou False s'il joue à droite
+    :return: Tuple comprenant la liste des pions poussée et un entier correspondant à la ligne ou se trouve le dernier pion de la liste
+    :raise TypeError: Si le premier paramètre n’est pas un plateau
+    :raise TypeError: Si le second paramètre n’est pas un pion
+    :raise TypeError: Si le troisième paramètre n’est pas un entier
+    :raise ValueError: Si le troisième paramètre n'est pas compris entre 0 et 5
+    :raise TypeError: Si le quatrième paramètre n’est pas un booléen
+    """
+    if type_plateau(plateau) == False :
+        raise TypeError("placerPionLignePlateau : Le premier paramètre n’est pas un plateau")
+    elif type_pion(pion) == False :
+        raise TypeError("placerPionLignePlateau : Le second paramètre n’est pas un pion")
+    elif type(ligne) != int :
+        raise TypeError("placerPionLignePlateau : le troisième paramètre n’est pas un entier")
+    elif ligne < 0 or ligne >= const.NB_LINES :
+        raise ValueError(f"placerPionLignePlateau : Le troisième paramètre {ligne} ne désigne pas une ligne")
+    elif type(left) != bool :
+        raise TypeError("placerPionLignePlateau : le quatrième paramètre n’est pas un booléen")
+
+    lst = []
+    lastLigne = None
+
+    ## Insertion par la gauche
+    if left == True:
+        j = - 1
+        while j < const.NB_COLUMNS - 1 and type_pion(plateau[ligne][j + 1]) == True:
+            j += 1
+            lst.append(plateau[ligne][j])
+
+        if j == const.NB_COLUMNS - 1:
+            lastLigne = const.NB_LINES
+
+
+        else :
+            i = ligne
+            while i < const.NB_LINES - 1 and plateau[i + 1][j + 1] == None:
+                i += 1
+
+            if j == -1:
+                plateau[i][j + 1] = pion
+
+            else:
+                plateau[i][j + 1] = plateau[ligne][j]
+
+            if i != ligne:
+                lastLigne = i
+
+        if len(lst)>= 2:
+            for idx in range(len(lst)-2, -1, -1):
+                plateau[ligne][idx + 1] = plateau[ligne][idx]
+
+        if len(lst) >= 1:
+            plateau[ligne][0] = pion
+
+
+
+
+        lst = [pion] + lst
+
+    ## Insertion par la droite
+    else:
+        j = 7
+        while j > 0 and type_pion(plateau[ligne][j - 1]) == True:
+            j -= 1
+            lst = [plateau[ligne][j]] + lst
+
+        if j == 0:
+            lastLigne = const.NB_LINES
+
+
+        else :
+            i = ligne
+            while i < const.NB_LINES - 1 and plateau[i + 1][j - 1] == None:
+                i += 1
+
+            if j == 7:
+                plateau[i][j - 1] = pion
+
+            else:
+                plateau[i][j - 1] = plateau[ligne][j]
+
+            if i != ligne:
+                lastLigne = i
+
+        if len(lst)>= 2:
+            diff = const.NB_COLUMNS - len(lst)
+            for idx in range(1, len(lst)):
+                plateau[ligne][diff + idx - 1] = plateau[ligne][diff + idx]
+
+        if len(lst)>= 1:
+            plateau[ligne][6] = pion
+
+
+        lst.append(pion)
+
+
+    return (lst, lastLigne)
+
+
+
+
+
 
 
 
