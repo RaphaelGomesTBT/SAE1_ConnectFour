@@ -417,7 +417,7 @@ def placerPionLignePlateau(plateau : list, pion : dict, ligne : int, left : bool
             if i != ligne:
                 lastLigne = i
 
-        if len(lst)>= 2:
+        if len(lst) >= 2:
             diff = const.NB_COLUMNS - len(lst)
             for idx in range(1, len(lst)):
                 plateau[ligne][diff + idx - 1] = plateau[ligne][diff + idx]

@@ -158,7 +158,7 @@ def _placerPionJoueur(joueur : dict) -> int:
     if getModeEtenduJoueur(joueur) == True:
         nb = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
         plateau = getPlateauJoueur(joueur)
-        while nb > 0 and nb < NB_COLUMNS - 1 and plateau[0][nb] != None:
+        while nb > 0 and nb < const.NB_COLUMNS - 1 and plateau[0][nb] != None:
             nb = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
 
     else:
