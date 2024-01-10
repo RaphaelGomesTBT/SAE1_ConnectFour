@@ -457,6 +457,9 @@ def encoderPlateau(plateau : list) -> str:
     return PlateauStr
 
 
+def isPatPlateau(plateau : list, hist : dict)-> bool:
+    status = False
+
 
 
 
