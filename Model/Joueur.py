@@ -155,11 +155,17 @@ def _placerPionJoueur(joueur : dict) -> int:
     :param joueur: Dictionnaire représentant le joueur
     :return: Entier correspondant au numéro de la colonne choisie
     """
+    if getModeEtenduJoueur(joueur) == True:
+        nb = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
+        plateau = getPlateauJoueur(joueur)
+        while nb > 0 and nb < NB_COLUMNS - 1 and plateau[0][nb] != None:
+            nb = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
 
-    nb = randint(0,const.NB_COLUMNS - 1)
-    plateau = getPlateauJoueur(joueur)
-    while plateau[0][nb] != None:
-        nb = randint(0, const.NB_COLUMNS - 1)
+    else:
+        nb = randint(0,const.NB_COLUMNS - 1)
+        plateau = getPlateauJoueur(joueur)
+        while plateau[0][nb] != None:
+            nb = randint(0, const.NB_COLUMNS - 1)
     return nb
 
 
