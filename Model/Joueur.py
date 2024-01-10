@@ -226,7 +226,8 @@ def setModeEtenduJoueur(joueur : dict, status : bool = True) -> None:
     if status == True:
         joueur[const.MODE_ETENDU] = True
     else:
-        del joueur[const.MODE_ETENDU]
+        if getModeEtenduJoueur(joueur) == True:
+            del joueur[const.MODE_ETENDU]
 
     return None
 
