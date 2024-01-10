@@ -458,7 +458,31 @@ def encoderPlateau(plateau : list) -> str:
 
 
 def isPatPlateau(plateau : list, hist : dict)-> bool:
+    """
+    Fonction vérifiant si le plateau de jeu à déjà été identique 5 fois.
+
+    :param plateau: Tableau 2D représentant le plateau de jeu
+    :param hist: Dictionnaire sauvegardant les versions du plateau et leur nombre d'apparition
+    :return: Booléen avec la valeur True si le plateau à déjà été identique 5 fois ou False dans le cas contraire
+    :raise TypeError: Si le premier paramètre n’est pas un plateau
+    :raise TypeError: Si le second paramètre n’est pas un dictionnaire
+    """
+
+    if type_plateau(plateau) == False:
+        raise TypeError("isPatPlateau : Le premier paramètre n’est pas un plateau")
+    elif type(hist) != dict:
+        raise TypeError("isPatPlateau : Le second paramètre n’est pas un dictionnaire")
+
     status = False
+    cle = encoderPlateau(plateau)
+    if cle in hist:
+        hist[cle] = hist[cle] + 1
+        if hist[cle] >= 5:
+            status = True
+    else:
+        hist[cle] = 1
+
+    return status
 
 
 
