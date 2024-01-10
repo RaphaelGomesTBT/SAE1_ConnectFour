@@ -36,12 +36,13 @@ print(toStringPlateau(p))
 ## print(len(lst))
 
 ## print(isRempliPlateau(p))
-ligne = randint(0, const.NB_LINES - 1)
-print(ligne)
-print(placerPionLignePlateau(p, construirePion(choice(const.COULEURS)), ligne, True))
+## ligne = randint(0, const.NB_LINES - 1)
+## print(ligne)
+## print(placerPionLignePlateau(p, construirePion(choice(const.COULEURS)), ligne, True))
 
-print(toStringPlateau(p))
+## print(toStringPlateau(p))
 
+print(encoderPlateau(p))
 
 
 
