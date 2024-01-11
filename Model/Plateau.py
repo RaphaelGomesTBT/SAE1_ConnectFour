@@ -395,9 +395,10 @@ def placerPionLignePlateau(plateau : list, pion : dict, ligne : int, left : bool
     ## Insertion par la droite
     else:
         j = 7
+        lst.append(pion)
         while j > 0 and type_pion(plateau[ligne][j - 1]) == True:
             j -= 1
-            lst = [plateau[ligne][j]] + lst
+            lst.append(plateau[ligne][j])
 
         if j == 0:
             lastLigne = const.NB_LINES
@@ -426,7 +427,7 @@ def placerPionLignePlateau(plateau : list, pion : dict, ligne : int, left : bool
             plateau[ligne][6] = pion
 
 
-        lst.append(pion)
+
 
 
     return (lst, lastLigne)

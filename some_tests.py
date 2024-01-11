@@ -36,7 +36,7 @@ print(toStringPlateau(p))
 ## print(len(lst))
 
 ## print(isRempliPlateau(p))
-ligne = randint(0, const.NB_LINES - 1)
+ligne = 3
 print(ligne)
 print(placerPionLignePlateau(p, construirePion(choice(const.COULEURS)), ligne, False))
 
