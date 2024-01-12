@@ -169,25 +169,6 @@ def _placerPionJoueur(joueur : dict) -> int:
     return nb
 
 
-def initialiserIAJoueur(joueur : dict, place : bool) -> None:
-    """
-    Fonction permettant d'affecter la fonction _placerPionJoueur au joueur
-
-    :param joueur: Dictionnaire représentant le joueur
-    :param place: Booléen avec la valeur True si le joueur joue en premier ou False s'il joue en second
-    :return: La fonction ne retourne rien
-    :raise TypeError: Si le premier paramètre n’est pas un joueur
-    :raise TypeError: Si le second paramètre n’est pas un booléen
-    """
-
-    if type_joueur(joueur) == False:
-        raise TypeError("initialiserIAJoueur : Le premier paramètre n’est pas un joueur")
-    elif type(place) != bool:
-        raise TypeError("initialiserIAJoueur : Le second paramètre n’est pas un booléen")
-
-    setPlacerPionJoueur(joueur, _placerPionJoueur)
-    return None
-
 
 def getModeEtenduJoueur(joueur : dict) -> bool:
     """
@@ -231,3 +212,23 @@ def setModeEtenduJoueur(joueur : dict, status : bool = True) -> None:
 
     return None
 
+from Model.IAJoueur import *
+
+def initialiserIAJoueur(joueur : dict, place : bool) -> None:
+    """
+    Fonction permettant d'affecter la fonction _placerPionJoueur au joueur
+
+    :param joueur: Dictionnaire représentant le joueur
+    :param place: Booléen avec la valeur True si le joueur joue en premier ou False s'il joue en second
+    :return: La fonction ne retourne rien
+    :raise TypeError: Si le premier paramètre n’est pas un joueur
+    :raise TypeError: Si le second paramètre n’est pas un booléen
+    """
+
+    if type_joueur(joueur) == False:
+        raise TypeError("initialiserIAJoueur : Le premier paramètre n’est pas un joueur")
+    elif type(place) != bool:
+        raise TypeError("initialiserIAJoueur : Le second paramètre n’est pas un booléen")
+
+    setPlacerPionJoueur(joueur, placerPionJoueurUpgrade)
+    return None
