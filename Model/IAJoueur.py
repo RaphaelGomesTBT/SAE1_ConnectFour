@@ -10,22 +10,19 @@ def placerPionJoueurUpgrade(joueur : dict) -> int:
     if couleur == 0:
         couleurOpp = 1
 
+
     if getModeEtenduJoueur(joueur) == False:
-        nb = alignerNplus1(joueur,plateau,3, couleur)
-        if nb == -1:
-            nb = alignerNplus1(joueur,plateau,3, couleurOpp)
+        nb = -1
+        i = 3
+        while nb == -1 and i > 0:
+            nb = alignerNplus1(joueur, plateau, i, couleur)
             if nb == -1:
-                nb = alignerNplus1(joueur,plateau, 2 , couleur)
-                if nb == -1:
-                    nb = alignerNplus1(joueur,plateau,2 , couleurOpp)
-                    if nb == -1:
-                        nb = alignerNplus1(joueur,plateau,1,couleur)
-                        if nb == -1:
-                            nb = alignerNplus1(joueur,plateau, 1, couleurOpp)
-                            if nb == -1:
-                                nb = randint(0, const.NB_COLUMNS - 1)
-                                while plateau[0][nb] != None:
-                                    nb = randint(0, const.NB_COLUMNS - 1)
+                nb = alignerNplus1(joueur, plateau, i, couleurOpp)
+            i -= 1
+        if nb == -1:
+            nb = randint(0, const.NB_COLUMNS - 1)
+            while plateau[0][nb] != None:
+                nb = randint(0, const.NB_COLUMNS - 1)
 
 
     return nb
@@ -33,18 +30,17 @@ def placerPionJoueurUpgrade(joueur : dict) -> int:
 
 
 
-def alignerNplus1(joueur : dict, plateau : list, n : int, couleur) -> int:
+def alignerNplus1(joueur : dict, plateau : list, n : int, couleur : int) -> int:
 
-    couleur = getCouleurJoueur(joueur)
-    nb = detecterNverticalPlateau(plateau,couleur, n)
+
+    nb = detecterNverticalPlateau(plateau, couleur, n)
     if nb == -1:
-        nb = detecterNverticalPlateau(plateau,couleur, n)
+        nb = detecterNhorizontalPlateau(plateau, couleur, n)
         if nb == -1:
             nb = detecterNdiagonaleDirectePlateau(plateau, couleur, n)
             if nb == -1:
                 nb = detecterNdiagonaleIndirectePlateau(plateau, couleur, n)
-                if nb == -1:
-                    nb = -1
+
     return nb
 
 
@@ -77,12 +73,14 @@ def detecterNhorizontalPlateau(plateau : list, couleur : int, n : int) -> int:
             while compt < n and type_pion(plateau[i][j+compt]) and getCouleurPion(plateau[i][j+compt]) == couleur:
                 compt += 1
             if compt == n :
-                if j-1>0 and plateau[i][j-1] is None:
+                if j-1>=0 and plateau[i][j-1] is None:
                     res = j-1
                     status = True
                 elif j+compt < const.NB_COLUMNS and plateau[i][j+compt] is None:
                     res = j+compt
                     status = True
+                else :
+                    j += compt+1
             elif compt > 0:
                 j += compt+1
             else :
@@ -111,9 +109,11 @@ def detecterNverticalPlateau(plateau : list, couleur : int, n : int) -> int:
             while compt < n and type_pion(plateau[i-compt][j]) and getCouleurPion(plateau[i-compt][j]) == couleur:
                 compt += 1
             if compt == n:
-                if i-compt >= 0 and plateau[i-compt][j] is None:
+                if i-compt >= 0 and plateau[i-compt][j] == None:
                     res = j
                     status = True
+                else:
+                    i -= compt + 1
             elif compt > 0:
                 i -= compt + 1
             else:
@@ -158,9 +158,12 @@ def detecterNdiagonaleDirectePlateau(plateau : list, couleur : int, n : int) -> 
                 if i+compt < const.NB_LINES and j+compt < const.NB_COLUMNS and plateau[i+compt][j+compt] is None:
                     res = j+compt
                     status = True
-                elif i-1 > 0 and j-1 > 0 and plateau[i-1][j-1] is None:
+                elif i-1 >= 0 and j-1 >= 0 and plateau[i-1][j-1] is None:
                     res = j-1
                     status = True
+                else:
+                    i += compt + 1
+                    j += compt + 1
             elif compt > 1:
                 i += compt + 1
                 j += compt + 1
@@ -199,21 +202,24 @@ def detecterNdiagonaleIndirectePlateau(plateau : list, couleur : int, n : int) -
     departi = const.NB_LINES - n
     departj = const.NB_COLUMNS - 1
     status = False
-    while departj >= const.NB_COLUMNS-n and status == False:
+    while departj >= n and status == False:
         i = departi
         j = departj
 
-        while j >= const.NB_COLUMNS-n and i <= const.NB_LINES-n and status == False:
+        while j >= n and i <= const.NB_LINES-n and status == False:
             compt = 0
             while compt < n and type_pion(plateau[i + compt][j - compt]) and getCouleurPion(plateau[i + compt][j - compt]) == couleur:
                 compt += 1
             if compt == n:
-                if i+compt < const.NB_LINES and j-compt < const.NB_COLUMNS and plateau[i+compt][j-compt] is None:
+                if i+compt < const.NB_LINES and j-compt >= 0 and plateau[i+compt][j-compt] is None:
                     res = j-compt
                     status = True
-                elif i-1 > 0 and j+1 > 0 and plateau[i-1][j+1] is None:
+                elif i-1 >= 0 and j+1 < const.NB_COLUMNS and plateau[i-1][j+1] is None:
                     res = j+1
                     status = True
+                else:
+                    i += compt + 1
+                    j -= compt + 1
             elif compt > 1:
                 i += compt + 1
                 j -= compt + 1
