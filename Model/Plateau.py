@@ -128,12 +128,16 @@ def detecter4horizontalPlateau(plateau : list, couleur : int) -> list:
     for i in range(const.NB_LINES):
         j = 0
         while j <= 3 :
+            print(toStringPlateau(plateau))
             compt = 0
             lst = []
             while compt <=3 and type_pion(plateau[i][j+compt]) and getCouleurPion(plateau[i][j+compt]) == couleur:
+                print(plateau[i][j+compt], i, j+compt)
                 lst.append(plateau[i][j+compt])
+
                 compt += 1
             if compt == 4 :
+                print(lst)
                 res.extend(lst)
                 j += 4
             elif compt >= 2:
@@ -302,6 +306,7 @@ def getPionsGagnantsPlateau(plateau : list) -> list:
         res.extend(detecter4verticalPlateau(plateau, couleur))
         res.extend(detecter4diagonaleDirectePlateau(plateau, couleur))
         res.extend(detecter4diagonaleIndirectePlateau(plateau, couleur))
+    print(res)
     return res
 
 
@@ -419,17 +424,17 @@ def placerPionLignePlateau(plateau : list, pion : dict, ligne : int, left : bool
                 lastLigne = i
 
         if len(lst) >= 2:
-            diff = const.NB_COLUMNS - 1 - len(lst)
-            for idx in range(1, len(lst)):
+            diff = const.NB_COLUMNS + 1 - len(lst)
+            for idx in range(1, len(lst)-1):
                 plateau[ligne][diff + idx - 1] = plateau[ligne][diff + idx]
 
-        if len(lst) >= 1:
+        if len(lst) >= 2:
             plateau[ligne][6] = pion
 
 
 
 
-
+    print(lst)
     return (lst, lastLigne)
 
 

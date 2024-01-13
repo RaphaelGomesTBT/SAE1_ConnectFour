@@ -23,6 +23,11 @@ def placerPionJoueurUpgrade(joueur : dict) -> int:
             nb = randint(0, const.NB_COLUMNS - 1)
             while plateau[0][nb] != None:
                 nb = randint(0, const.NB_COLUMNS - 1)
+    else :
+        nb = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
+        while nb > 0 and nb < const.NB_COLUMNS - 1 and plateau[0][nb] != None:
+            nb = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
+
 
 
     return nb
