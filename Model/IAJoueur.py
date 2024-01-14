@@ -18,21 +18,30 @@ def placerPionJoueurUpgrade(joueur : dict) -> int:
 
 
     if getModeEtenduJoueur(joueur) == False:
-        nb = -1
+        nb = -7
         i = 3
-        while nb == -1 and i > 0:
-            nb = alignerNplus1(joueur, plateau, i, couleur)
-            if nb == -1:
-                nb = alignerNplus1(joueur, plateau, i, couleurOpp)
+        while nb == -7 and i > 0:
+            nb = alignerNplus1(joueur, plateau, i, couleur, False)
+            if nb == -7:
+                nb = alignerNplus1(joueur, plateau, i, couleurOpp, False)
             i -= 1
-        if nb == -1:
+        if nb == -7:
             nb = randint(0, const.NB_COLUMNS - 1)
             while plateau[0][nb] != None:
                 nb = randint(0, const.NB_COLUMNS - 1)
     else :
-        nb = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
-        while nb > 0 and nb < const.NB_COLUMNS - 1 and plateau[0][nb] != None:
+        nb = -7
+        i = 3
+        while nb == -7 and i > 0:
+            nb = alignerNplus1(joueur, plateau, i, couleur, True)
+            if nb == -7:
+                nb = alignerNplus1(joueur, plateau, i, couleurOpp, True)
+            i -= 1
+        if nb == -7:
+
             nb = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
+            while nb > 0 and nb < const.NB_COLUMNS - 1 and plateau[0][nb] != None:
+                nb = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
 
 
 
@@ -41,7 +50,7 @@ def placerPionJoueurUpgrade(joueur : dict) -> int:
 
 
 
-def alignerNplus1(joueur : dict, plateau : list, n : int, couleur : int) -> int:
+def alignerNplus1(joueur : dict, plateau : list, n : int, couleur : int, modeE : bool) -> int:
     """
     Fonction permettant de trouver si une case est libre après un nombre n de cases alignées
 
@@ -49,16 +58,16 @@ def alignerNplus1(joueur : dict, plateau : list, n : int, couleur : int) -> int:
     :param plateau: Tableau 2D représentant le plateau de jeu
     :param n: Entier correspondant au nombre de pion devant être alignés
     :param couleur: Entier correspondant à une couleur (0 = jaune/ 1 = rouge)
-    :return: Entier correspondant à un numéro de colonne (ou -1 si aucune colonnes trouvées selon les critères)
+    :return: Entier correspondant à un numéro de colonne (ou -7 si aucune colonnes trouvées selon les critères)
     """
 
 
     nb = detecterNverticalPlateau(plateau, couleur, n)
-    if nb == -1:
-        nb = detecterNhorizontalPlateau(plateau, couleur, n)
-        if nb == -1:
+    if nb == -7:
+        nb = detecterNhorizontalPlateau(plateau, couleur, n, modeE)
+        if nb == -7:
             nb = detecterNdiagonaleDirectePlateau(plateau, couleur, n)
-            if nb == -1:
+            if nb == -7:
                 nb = detecterNdiagonaleIndirectePlateau(plateau, couleur, n)
 
     return nb
@@ -74,14 +83,14 @@ def alignerNplus1(joueur : dict, plateau : list, n : int, couleur : int) -> int:
 
 
 
-def detecterNhorizontalPlateau(plateau : list, couleur : int, n : int) -> int:
+def detecterNhorizontalPlateau(plateau : list, couleur : int, n : int, modeE : bool) -> int:
     """
     Fonction permettant de trouver si une case est libre avant ou après un nombre n de cases alignées horizontalement
 
     :param plateau: Tableau 2D représentant le plateau de jeu
     :param n: Entier correspondant au nombre de pion devant être alignés
     :param couleur: Entier correspondant à une couleur (0 = jaune/ 1 = rouge)
-    :return: Entier correspondant à un numéro de colonne (ou -1 si aucune colonnes trouvées selon les critères)
+    :return: Entier correspondant à un numéro de colonne (ou -7 si aucune colonnes trouvées selon les critères)
     """
 
     if type_plateau(plateau) == False:
@@ -91,7 +100,7 @@ def detecterNhorizontalPlateau(plateau : list, couleur : int, n : int) -> int:
     elif couleur != 0 and couleur != 1:
         raise ValueError(f"détecter4horizontalPlateau : La valeur de la couleur {couleur} n'est pas correcte")
 
-    res = -1
+    res = -7
     i = 0
     status = False
     while i < const.NB_LINES and status == False:
@@ -106,6 +115,12 @@ def detecterNhorizontalPlateau(plateau : list, couleur : int, n : int) -> int:
                     status = True
                 elif j+compt < const.NB_COLUMNS and plateau[i][j+compt] is None:
                     res = j+compt
+                    status = True
+                elif j-1<0 and modeE == True:
+                    res = i - 1 - 2*i
+                    status = True
+                elif j + compt == const.NB_COLUMNS and modeE == True:
+                    res = i + const.NB_COLUMNS
                     status = True
                 else :
                     j += compt+1
@@ -135,7 +150,7 @@ def detecterNverticalPlateau(plateau : list, couleur : int, n : int) -> int:
     elif couleur != 0 and couleur != 1:
         raise ValueError(f"détecter4verticalPlateau : La valeur de la couleur {couleur} n'est pas correcte")
 
-    res = -1
+    res = -7
     j = 0
     status = False
     while j < const.NB_COLUMNS and status == False :
@@ -159,14 +174,14 @@ def detecterNverticalPlateau(plateau : list, couleur : int, n : int) -> int:
 
 
 
-def detecterNdiagonaleDirectePlateau(plateau : list, couleur : int, n : int) -> int:
+def detecterNdiagonaleDirectePlateau(plateau : list, couleur : int, n : int, modeE : bool) -> int:
     """
     Fonction permettant de trouver si une case est libre avant ou après un nombre n de cases alignées sur une diagonale directe
 
     :param plateau: Tableau 2D représentant le plateau de jeu
     :param n: Entier correspondant au nombre de pion devant être alignés
     :param couleur: Entier correspondant à une couleur (0 = jaune/ 1 = rouge)
-    :return: Entier correspondant à un numéro de colonne (ou -1 si aucune colonnes trouvées selon les critères)
+    :return: Entier correspondant à un numéro de colonne (ou -7 si aucune colonnes trouvées selon les critères)
     """
 
     if type_plateau(plateau) == False:
@@ -176,7 +191,7 @@ def detecterNdiagonaleDirectePlateau(plateau : list, couleur : int, n : int) -> 
     elif couleur != 0 and couleur != 1:
         raise ValueError(f"détecter4diagonaleDirectePlateau : La valeur de la couleur {couleur} n'est pas correcte")
 
-    res = -1
+    res = -7
     departi = const.NB_LINES-n
     departj = 0
     status = False
@@ -220,7 +235,7 @@ def detecterNdiagonaleIndirectePlateau(plateau : list, couleur : int, n : int) -
     :param plateau: Tableau 2D représentant le plateau de jeu
     :param n: Entier correspondant au nombre de pion devant être alignés
     :param couleur: Entier correspondant à une couleur (0 = jaune/ 1 = rouge)
-    :return: Entier correspondant à un numéro de colonne (ou -1 si aucune colonnes trouvées selon les critères)
+    :return: Entier correspondant à un numéro de colonne (ou -7 si aucune colonnes trouvées selon les critères)
     """
 
     if type_plateau(plateau) == False:
@@ -230,7 +245,7 @@ def detecterNdiagonaleIndirectePlateau(plateau : list, couleur : int, n : int) -
     elif couleur != 0 and couleur != 1:
         raise ValueError(f"détecter4diagonaleIndirectePlateau : La valeur de la couleur {couleur} n'est pas correcte")
 
-    res = -1
+    res = -7
     departi = const.NB_LINES - n
     departj = const.NB_COLUMNS - 1
     status = False
