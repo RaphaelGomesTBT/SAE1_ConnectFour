@@ -110,10 +110,10 @@ def detecterNhorizontalPlateau(plateau : list, couleur : int, n : int, modeE : b
             while compt < n and type_pion(plateau[i][j+compt]) and getCouleurPion(plateau[i][j+compt]) == couleur:
                 compt += 1
             if compt == n :
-                if j-1>=0 and plateau[i][j-1] is None:
+                if j-1>=0 and verificationPlacement(plateau, i, j-1) == True:
                     res = j-1
                     status = True
-                elif j+compt < const.NB_COLUMNS and plateau[i][j+compt] is None:
+                elif j+compt < const.NB_COLUMNS and verificationPlacement(plateau, i, j+compt) == True:
                     res = j+compt
                     status = True
                 elif j-1<0 and modeE == True:
@@ -174,7 +174,7 @@ def detecterNverticalPlateau(plateau : list, couleur : int, n : int) -> int:
 
 
 
-def detecterNdiagonaleDirectePlateau(plateau : list, couleur : int, n : int, modeE : bool) -> int:
+def detecterNdiagonaleDirectePlateau(plateau : list, couleur : int, n : int) -> int:
     """
     Fonction permettant de trouver si une case est libre avant ou après un nombre n de cases alignées sur une diagonale directe
 
@@ -204,10 +204,10 @@ def detecterNdiagonaleDirectePlateau(plateau : list, couleur : int, n : int, mod
             while compt < n and type_pion(plateau[i+compt][j+compt]) and getCouleurPion(plateau[i+compt][j+compt]) == couleur:
                 compt += 1
             if compt == n:
-                if i+compt < const.NB_LINES and j+compt < const.NB_COLUMNS and plateau[i+compt][j+compt] is None:
+                if i+compt < const.NB_LINES and j+compt < const.NB_COLUMNS and verificationPlacement(plateau, i+compt, j+compt) == True:
                     res = j+compt
                     status = True
-                elif i-1 >= 0 and j-1 >= 0 and plateau[i-1][j-1] is None:
+                elif i-1 >= 0 and j-1 >= 0 and verificationPlacement(plateau, i-1, j-1) == True:
                     res = j-1
                     status = True
                 else:
@@ -258,10 +258,10 @@ def detecterNdiagonaleIndirectePlateau(plateau : list, couleur : int, n : int) -
             while compt < n and type_pion(plateau[i + compt][j - compt]) and getCouleurPion(plateau[i + compt][j - compt]) == couleur:
                 compt += 1
             if compt == n:
-                if i+compt < const.NB_LINES and j-compt >= 0 and plateau[i+compt][j-compt] is None:
+                if i+compt < const.NB_LINES and j-compt >= 0 and verificationPlacement(plateau, i+compt, j-compt) == True:
                     res = j-compt
                     status = True
-                elif i-1 >= 0 and j+1 < const.NB_COLUMNS and plateau[i-1][j+1] is None:
+                elif i-1 >= 0 and j+1 < const.NB_COLUMNS and verificationPlacement(plateau, i-1, j+1) == True:
                     res = j+1
                     status = True
                 else:
@@ -282,6 +282,13 @@ def detecterNdiagonaleIndirectePlateau(plateau : list, couleur : int, n : int) -
     return res
 
 
+def verificationPlacement(plateau : list, i : int, j :int) -> bool:
+    status = False
+    if plateau[i][j] is None:
+        status = True
+        if i < const.NB_LINES -1 and plateau[i+1][j] is None:
+            status = False
+    return status
 
 
 
