@@ -20,30 +20,28 @@ def placerPionJoueurUpgrade(joueur : dict) -> int:
     if getModeEtenduJoueur(joueur) == False:
         nb = -7
         i = 3
-        while nb == -7 and i > 0:
+        while nb == -7 and i > 0: ## Cherche le premier coup pouvant être joué en regardant d'abord les pion alignés par 3, puis 2, puis 1 en prenant en priorité la couleur jouant.
             nb = alignerNplus1(joueur, plateau, i, couleur, False)
             if nb == -7:
                 nb = alignerNplus1(joueur, plateau, i, couleurOpp, False)
             i -= 1
-        if nb == -7:
+        if nb == -7: ## Selection aléatoire de la colonnes
             nb = randint(0, const.NB_COLUMNS - 1)
             while plateau[0][nb] != None:
                 nb = randint(0, const.NB_COLUMNS - 1)
     else :
         nb = -7
         i = 3
-        while nb == -7 and i > 0:
+        while nb == -7 and i > 0: ## Cherche le premier coup pouvant être joué en regardant d'abord les pion alignés par 3, puis 2, puis 1 en prenant en priorité la couleur jouant.
             nb = alignerNplus1(joueur, plateau, i, couleur, True)
             if nb == -7:
                 nb = alignerNplus1(joueur, plateau, i, couleurOpp, True)
             i -= 1
-        if nb == -7:
+        if nb == -7: ## Selection aléatoire de la colonnes ou de la ligne
 
             nb = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
             while nb > 0 and nb < const.NB_COLUMNS - 1 and plateau[0][nb] != None:
                 nb = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
-
-
 
     return nb
 
@@ -58,17 +56,18 @@ def alignerNplus1(joueur : dict, plateau : list, n : int, couleur : int, modeE :
     :param plateau: Tableau 2D représentant le plateau de jeu
     :param n: Entier correspondant au nombre de pion devant être alignés
     :param couleur: Entier correspondant à une couleur (0 = jaune/ 1 = rouge)
+    :param modeE: Booléen indiquant si le joueur joue en mode etendu ou non
     :return: Entier correspondant à un numéro de colonne (ou -7 si aucune colonnes trouvées selon les critères)
     """
 
 
-    nb = detecterNverticalPlateau(plateau, couleur, n)
+    nb = detecterNverticalPlateau(plateau, couleur, n) ## Cherche si n pions sont alignés verticalement
     if nb == -7:
-        nb = detecterNhorizontalPlateau(plateau, couleur, n, modeE)
+        nb = detecterNhorizontalPlateau(plateau, couleur, n, modeE) ## Sinon cherche si n pions sont alignés horizontalement
         if nb == -7:
-            nb = detecterNdiagonaleDirectePlateau(plateau, couleur, n)
+            nb = detecterNdiagonaleDirectePlateau(plateau, couleur, n) ## Sinon cherche si n pions sont alignés sur une diagonale directe
             if nb == -7:
-                nb = detecterNdiagonaleIndirectePlateau(plateau, couleur, n)
+                nb = detecterNdiagonaleIndirectePlateau(plateau, couleur, n) ## Sinon cherche si n pions sont alignés sur une diagonale indirecte
 
     return nb
 
@@ -76,9 +75,6 @@ def alignerNplus1(joueur : dict, plateau : list, n : int, couleur : int, modeE :
 
 
 
-
-
-    status = False
 
 
 
@@ -90,36 +86,30 @@ def detecterNhorizontalPlateau(plateau : list, couleur : int, n : int, modeE : b
     :param plateau: Tableau 2D représentant le plateau de jeu
     :param n: Entier correspondant au nombre de pion devant être alignés
     :param couleur: Entier correspondant à une couleur (0 = jaune/ 1 = rouge)
+    :param modeE: Booléen indiquant si le joueur joue en mode etendu ou non
     :return: Entier correspondant à un numéro de colonne (ou -7 si aucune colonnes trouvées selon les critères)
     """
-
-    if type_plateau(plateau) == False:
-        raise TypeError("detecter4horizontalPlateau : Le premier paramètre ne correspond pas à un plateau")
-    elif type(couleur) != int:
-        raise TypeError("detecter4horizontalPlateau : Le second paramètre n'est pas un entier")
-    elif couleur != 0 and couleur != 1:
-        raise ValueError(f"détecter4horizontalPlateau : La valeur de la couleur {couleur} n'est pas correcte")
 
     res = -7
     i = 0
     status = False
-    while i < const.NB_LINES and status == False:
+    while i < const.NB_LINES and status == False: ## boucle sur chaque ligne
         j = 0
         while j <= const.NB_COLUMNS-n and status == False:
             compt = 0
-            while compt < n and type_pion(plateau[i][j+compt]) and getCouleurPion(plateau[i][j+compt]) == couleur:
+            while compt < n and type_pion(plateau[i][j+compt]) and getCouleurPion(plateau[i][j+compt]) == couleur: ## compte le nombre de pion alignés
                 compt += 1
             if compt == n :
-                if j-1>=0 and verificationPlacement(plateau, i, j-1) == True:
+                if j-1>=0 and verificationPlacement(plateau, i, j-1) == True: ## Vérifie si le pion peut être placé avant
                     res = j-1
                     status = True
-                elif j+compt < const.NB_COLUMNS and verificationPlacement(plateau, i, j+compt) == True:
+                elif j+compt < const.NB_COLUMNS and verificationPlacement(plateau, i, j+compt) == True: ## Vérifie si le pion peut être placé après
                     res = j+compt
                     status = True
-                elif j-1<0 and modeE == True:
+                elif j-1<0 and modeE == True: ## Vérifie si le pion peut être poussé avant
                     res = i - 1 - 2*i
                     status = True
-                elif j + compt == const.NB_COLUMNS and modeE == True:
+                elif j + compt == const.NB_COLUMNS and modeE == True: ## Vérifie si le pion peut être poussé après
                     res = i + const.NB_COLUMNS
                     status = True
                 else :
@@ -139,7 +129,7 @@ def detecterNverticalPlateau(plateau : list, couleur : int, n : int) -> int:
     :param plateau: Tableau 2D représentant le plateau de jeu
     :param n: Entier correspondant au nombre de pion devant être alignés
     :param couleur: Entier correspondant à une couleur (0 = jaune/ 1 = rouge)
-    :return: Entier correspondant à un numéro de colonne (ou -1 si aucune colonnes trouvées selon les critères)
+    :return: Entier correspondant à un numéro de colonne (ou -7 si aucune colonnes trouvées selon les critères)
     """
 
 
@@ -160,7 +150,7 @@ def detecterNverticalPlateau(plateau : list, couleur : int, n : int) -> int:
             while compt < n and type_pion(plateau[i-compt][j]) and getCouleurPion(plateau[i-compt][j]) == couleur:
                 compt += 1
             if compt == n:
-                if i-compt >= 0 and plateau[i-compt][j] == None:
+                if i-compt >= 0 and plateau[i-compt][j] == None: ## Vérifie si le pion peut être placé au dessus
                     res = j
                     status = True
                 else:
@@ -204,10 +194,10 @@ def detecterNdiagonaleDirectePlateau(plateau : list, couleur : int, n : int) -> 
             while compt < n and type_pion(plateau[i+compt][j+compt]) and getCouleurPion(plateau[i+compt][j+compt]) == couleur:
                 compt += 1
             if compt == n:
-                if i+compt < const.NB_LINES and j+compt < const.NB_COLUMNS and verificationPlacement(plateau, i+compt, j+compt) == True:
+                if i+compt < const.NB_LINES and j+compt < const.NB_COLUMNS and verificationPlacement(plateau, i+compt, j+compt) == True: ## Vérifie si le pion peut être placé après
                     res = j+compt
                     status = True
-                elif i-1 >= 0 and j-1 >= 0 and verificationPlacement(plateau, i-1, j-1) == True:
+                elif i-1 >= 0 and j-1 >= 0 and verificationPlacement(plateau, i-1, j-1) == True: ## Vérifie si le pion peut être placé avant
                     res = j-1
                     status = True
                 else:
@@ -258,10 +248,10 @@ def detecterNdiagonaleIndirectePlateau(plateau : list, couleur : int, n : int) -
             while compt < n and type_pion(plateau[i + compt][j - compt]) and getCouleurPion(plateau[i + compt][j - compt]) == couleur:
                 compt += 1
             if compt == n:
-                if i+compt < const.NB_LINES and j-compt >= 0 and verificationPlacement(plateau, i+compt, j-compt) == True:
+                if i+compt < const.NB_LINES and j-compt >= 0 and verificationPlacement(plateau, i+compt, j-compt) == True: ## Vérifie si le pion peut être placé après
                     res = j-compt
                     status = True
-                elif i-1 >= 0 and j+1 < const.NB_COLUMNS and verificationPlacement(plateau, i-1, j+1) == True:
+                elif i-1 >= 0 and j+1 < const.NB_COLUMNS and verificationPlacement(plateau, i-1, j+1) == True: ## Vérifie si le pion peut être placé avant
                     res = j+1
                     status = True
                 else:
@@ -283,6 +273,14 @@ def detecterNdiagonaleIndirectePlateau(plateau : list, couleur : int, n : int) -
 
 
 def verificationPlacement(plateau : list, i : int, j :int) -> bool:
+    """
+    Fonction vérifiant si la case trouver est disponible et si elle peut être jouée (pas de trou en dessous)
+
+    :param plateau: Tableau 2D représentant le plateau de jeu
+    :param i: Entier correspondant à la ligne de la case
+    :param j: Entier correspondant à la colonne de la case
+    :return: Booléen avec la valeur True si la case peut être joué ou False sinon
+    """
     status = False
     if plateau[i][j] is None:
         status = True
